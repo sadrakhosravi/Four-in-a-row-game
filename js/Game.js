@@ -18,8 +18,45 @@ class Game {
    * @return  {Array}    An array of two Player objects.
    */
   createPlayers() {
-    const players = [new Player('Player 1', '#e15258', 1, true), new Player('Player 2', '#e59a13', 2)];
+    let player1 = prompt("Please enter first player's name");
+
+    while (player1 === '') {
+      player1 = prompt("Name cannot be empty! Please enter first player's name.");
+    }
+
+    if (player1 === null) {
+      player1 = 'Player1';
+    }
+
+    let player2 = prompt("Please enter second player's name");
+    while (player2 === '') {
+      player2 = prompt("Name cannot be empty! Please enter second player's name.");
+    }
+
+    if (player2 === null) {
+      player2 = 'Player2';
+    }
+
+    const players = [new Player(player1, '#e15258', 1, true), new Player(player2, '#e59a13', 2)];
+
     return players;
+  }
+
+  /**
+   * Outputs current player's name on the screen
+   */
+  activePlayerText() {
+    const activePlayerName = this.activePlayer.name;
+    const playerText = document.querySelector('.player');
+    playerText.style.display = 'block';
+    playerText.textContent = `${activePlayerName}'s turn`;
+  }
+
+  /**
+   * Hides the active player's name
+   */
+  hideActivePlayerText() {
+    document.querySelector('.player').style.display = 'none';
   }
 
   /**
@@ -84,6 +121,7 @@ class Game {
   startGame() {
     this.board.drawHTMLBoard();
     this.activePlayer.activeToken.drawHTMLToken();
+    this.activePlayerText();
     this.ready = true;
   }
 
@@ -168,12 +206,15 @@ class Game {
 
       if (this.activePlayer.checkTokens()) {
         this.activePlayer.activeToken.drawHTMLToken();
+        this.activePlayerText();
         this.ready = true;
       } else {
         this.gameOver('You are out of tokens!');
+        this.hideActivePlayerText();
       }
     } else {
       this.gameOver(`${target.owner.name} wins! 🎉`);
+      this.hideActivePlayerText();
     }
   }
 
