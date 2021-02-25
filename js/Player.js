@@ -37,4 +37,12 @@ class Player {
 
     return tokens;
   }
+
+  /**
+   * Check if a player has any undropped tokens left
+   * @return {Boolean}
+   */
+  checkTokens() {
+    return this.unusedTokens.length === 0 ? false : true;
+  }
 }
